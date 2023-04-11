@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,6 +35,7 @@ public class EventFragment extends Fragment {
 
     private FragmentEventBinding binding;
     private Gson gson = new Gson();
+    private User user;
 
     public EventFragment() {
         // Required empty public constructor
@@ -45,9 +47,12 @@ public class EventFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        EventFragmentArgs args = EventFragmentArgs.fromBundle(getArguments());
+        user = args.getUser();
 
         binding = FragmentEventBinding.inflate(inflater, container, false);
 
@@ -55,13 +60,19 @@ public class EventFragment extends Fragment {
         eventList.setLayoutManager(new LinearLayoutManager(getContext()));
         this.getEvents(eventList);
 
+        binding.createEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(EventFragment.this)
+                        .navigate(EventFragmentDirections.actionEventFragmentToCreateEventFragment(user));
+            }
+        });
+
         return binding.getRoot();
     }
 
 
     private void getEvents(RecyclerView recyclerView){
-        EventFragmentArgs args = EventFragmentArgs.fromBundle(getArguments());
-        User user = args.getUser();
 
         RequestQueue queue = Volley.newRequestQueue(getContext());
 

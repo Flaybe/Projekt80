@@ -51,6 +51,9 @@
         <argument
             android:name="user"
             app:argType="com.example.projekt80.User" />
+        <action
+            android:id="@+id/action_eventFragment_to_createEventFragment"
+            app:destination="@id/createEventFragment" />
     </fragment>
     <fragment
         android:id="@+id/friendsFragment"
@@ -60,5 +63,17 @@
         <argument
             android:name="user"
             app:argType="com.example.projekt80.User" />
+    </fragment>
+    <fragment
+        android:id="@+id/createEventFragment"
+        android:name="com.example.projekt80.CreateEventFragment"
+        android:label="fragment_create_event"
+        tools:layout="@layout/fragment_create_event" >
+        <argument
+            android:name="user"
+            app:argType="com.example.projekt80.User" />
+        <action
+            android:id="@+id/action_createEventFragment_to_eventFragment"
+            app:destination="@id/eventFragment" />
     </fragment>
 </navigation>

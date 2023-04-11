@@ -1,5 +1,6 @@
 package com.example.projekt80.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
+
         TextView name = holder.itemView.findViewById(R.id.eventName);
         TextView description = holder.itemView.findViewById(R.id.description);
         TextView creator = holder.itemView.findViewById(R.id.creator);

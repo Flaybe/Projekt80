@@ -10,12 +10,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.projekt80.databinding.FragmentRegisterBinding;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,6 +66,9 @@ public class RegisterFragment extends Fragment {
                   JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json,
                           response -> {
                               Log.d("response", response.toString());
+
+                              Toast.makeText(getContext(), "User created", Toast.LENGTH_SHORT).show();
+
                               NavHostFragment.findNavController(RegisterFragment.this)
                                       .navigate(R.id.action_registerFragment_to_loginFragment);
                           },

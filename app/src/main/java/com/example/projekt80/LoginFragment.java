@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -74,6 +75,8 @@ public class LoginFragment extends Fragment {
                                 String AccessToken = response.get("access_token").toString();
                                 User user = gson.fromJson(json.toString(), User.class);
                                 user.setAccessToken(AccessToken);
+
+                                Toast.makeText(getContext(), "Welcome " + user.getName(), Toast.LENGTH_SHORT).show();
 
                                 LoginFragmentDirections.ActionLoginFragmentToHomeFragment action =
                                         LoginFragmentDirections.actionLoginFragmentToHomeFragment(user);
