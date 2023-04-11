@@ -7,8 +7,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.projekt80.EventListFragment;
+import com.example.projekt80.EventListFragmentDirections;
 import com.example.projekt80.R;
 import com.example.projekt80.json.Event;
 
@@ -28,8 +33,27 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
     public EventViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.event_layout, parent, false);
+        EventViewHolder holder = new EventViewHolder(itemView);
 
-        return new EventViewHolder(itemView);
+        // Set onClickListener to the whole border
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle the click event here
+                int position = holder.getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    // Get the event object at the clicked position
+                    Event event = events.get(position);
+                    // Navigate to the event fragment
+                    EventListFragmentDirections.ActionEventListFragmentToEventFragment action =
+                            EventListFragmentDirections.actionEventListFragmentToEventFragment(event);
+                    NavController navController = Navigation.findNavController(v);
+                    navController.navigate(action);
+                }
+            }
+        });
+
+        return holder;
     }
 
     @Override
@@ -39,8 +63,12 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
         TextView description = holder.itemView.findViewById(R.id.description);
         TextView creator = holder.itemView.findViewById(R.id.creator);
 
+
         name.setText(events.get(position).getName());
-        description.setText(events.get(position).getDescription());
+
+        String desc = events.get(position).getDescription();
+        description.setText(desc.length() > 8 ?  desc.substring(0, 8) + "..." : desc);
+
         creator.setText(events.get(position).getCreator());
 
     }

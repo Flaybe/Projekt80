@@ -15,11 +15,10 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.projekt80.json.User;
 import com.example.projekt80.databinding.FragmentLoginBinding;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,7 +27,7 @@ import org.json.JSONObject;
 public class LoginFragment extends Fragment {
 
     private FragmentLoginBinding binding;
-    public final static String AZURE = "http://eventhub80.azurewebsites.net";
+    public final static String AZURE = "http://192.168.0.30:5000/";
     private Gson gson = new Gson();
 
     public LoginFragment() {

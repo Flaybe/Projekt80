@@ -32,10 +32,10 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <argument android:name="user"
-            app:argType="com.example.projekt80.User" />
+            app:argType="com.example.projekt80.json.User" />
         <action
             android:id="@+id/action_homeFragment_to_eventFragment"
-            app:destination="@id/eventFragment" />
+            app:destination="@id/eventListFragment" />
         <action
             android:id="@+id/action_homeFragment_to_friendsFragment"
             app:destination="@id/friendsFragment" />
@@ -44,16 +44,19 @@
             app:destination="@id/loginFragment" />
     </fragment>
     <fragment
-        android:id="@+id/eventFragment"
-        android:name="com.example.projekt80.EventFragment"
+        android:id="@+id/eventListFragment"
+        android:name="com.example.projekt80.EventListFragment"
         android:label="fragment_event"
-        tools:layout="@layout/fragment_event" >
+        tools:layout="@layout/fragment_event_list" >
         <argument
             android:name="user"
-            app:argType="com.example.projekt80.User" />
+            app:argType="com.example.projekt80.json.User" />
         <action
-            android:id="@+id/action_eventFragment_to_createEventFragment"
+            android:id="@+id/action_eventListFragment_to_createEventFragment"
             app:destination="@id/createEventFragment" />
+        <action
+            android:id="@+id/action_eventListFragment_to_eventFragment"
+            app:destination="@id/eventFragment" />
     </fragment>
     <fragment
         android:id="@+id/friendsFragment"
@@ -62,7 +65,7 @@
         tools:layout="@layout/fragment_friends" >
         <argument
             android:name="user"
-            app:argType="com.example.projekt80.User" />
+            app:argType="com.example.projekt80.json.User" />
     </fragment>
     <fragment
         android:id="@+id/createEventFragment"
@@ -71,9 +74,18 @@
         tools:layout="@layout/fragment_create_event" >
         <argument
             android:name="user"
-            app:argType="com.example.projekt80.User" />
+            app:argType="com.example.projekt80.json.User" />
         <action
             android:id="@+id/action_createEventFragment_to_eventFragment"
-            app:destination="@id/eventFragment" />
+            app:destination="@id/eventListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/eventFragment"
+        android:name="com.example.projekt80.EventFragment"
+        android:label="fragment_event"
+        tools:layout="@layout/fragment_event" >
+        <argument
+            android:name="event"
+            app:argType="com.example.projekt80.json.Event" />
     </fragment>
 </navigation>

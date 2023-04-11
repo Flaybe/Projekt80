@@ -1,10 +1,8 @@
 package com.example.projekt80.json;
 
-import com.example.projekt80.User;
-
 import java.util.List;
 
-public class Event {
+public class Event implements java.io.Serializable {
 
     private String id;
     private String name;

@@ -10,11 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.projekt80.json.User;
 import com.example.projekt80.databinding.FragmentHomeBinding;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class HomeFragment extends Fragment {
@@ -67,11 +72,21 @@ public class HomeFragment extends Fragment {
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, LoginFragment.AZURE + "/user/logout",
                         response -> {
                             Log.d("Response", response);
-                        }, error -> Log.d("Error", error.toString()));
+                        }, error -> Log.d("Error", error.toString())
+                ) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String, String> headers = new HashMap<>();
+                        headers.put("Authorization", "Bearer " + user.getAccessToken());
+                        return headers;
+                    }
+                };
 
                 NavHostFragment.findNavController(HomeFragment.this)
                         .popBackStack(R.id.loginFragment, false);
+                queue.add(stringRequest);
             }
+
         });
 
         return binding.getRoot();

@@ -1,4 +1,4 @@
-package com.example.projekt80;
+package com.example.projekt80.json;
 
 import java.io.Serializable;
 
