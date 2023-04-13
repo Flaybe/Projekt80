@@ -10,7 +10,7 @@ import com.example.projekt80.R;
 
 public class ChatViewHolder extends RecyclerView.ViewHolder{
 
-    private TextView message;
+    TextView message;
 
 
     public ChatViewHolder(@NonNull View itemView) {

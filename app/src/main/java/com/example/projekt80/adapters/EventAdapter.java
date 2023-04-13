@@ -16,6 +16,7 @@ import com.example.projekt80.EventListFragment;
 import com.example.projekt80.EventListFragmentDirections;
 import com.example.projekt80.R;
 import com.example.projekt80.json.Event;
+import com.example.projekt80.json.User;
 
 import java.util.ArrayList;
 
@@ -23,9 +24,11 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
 
 
     private final ArrayList<Event> events;
+    private User user;
 
-    public EventAdapter(ArrayList<Event> events) {
+    public EventAdapter(ArrayList<Event> events, User user) {
         this.events = events;
+        this.user = user;
     }
 
     @NonNull
@@ -46,7 +49,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
                     Event event = events.get(position);
                     // Navigate to the event fragment
                     EventListFragmentDirections.ActionEventListFragmentToEventFragment action =
-                            EventListFragmentDirections.actionEventListFragmentToEventFragment(event);
+                            EventListFragmentDirections.actionEventListFragmentToEventFragment(event, user);
                     NavController navController = Navigation.findNavController(v);
                     navController.navigate(action);
                 }

@@ -77,7 +77,7 @@ public class EventListFragment extends Fragment {
                 response -> {
                     Log.d("Events", response);
                     Events events = gson.fromJson(response, Events.class);
-                    binding.eventList.setAdapter(new EventAdapter(events.getEvents()));
+                    binding.eventList.setAdapter(new EventAdapter(events.getEvents(), user));
                 },
                 error -> {
                     error.printStackTrace();

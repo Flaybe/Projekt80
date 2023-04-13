@@ -8,7 +8,7 @@ public class Event implements java.io.Serializable {
     private String name;
     private String description;
     private List<String> members;
-    private List<String> messages;
+    private List<Message> messages;
     private String creator;
 
     public String getId() {
@@ -43,11 +43,11 @@ public class Event implements java.io.Serializable {
         this.members = members;
     }
 
-    public List<String> getMessages() {
+    public List<Message> getMessages() {
         return messages;
     }
 
-    public void setMessages(List<String> messages) {
+    public void setMessages(List<Message> messages) {
         this.messages = messages;
     }
 

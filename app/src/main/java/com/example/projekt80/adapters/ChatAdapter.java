@@ -1,6 +1,7 @@
 package com.example.projekt80.adapters;
 
-import android.os.Message;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projekt80.R;
+import com.example.projekt80.json.Message;
 
 import java.util.ArrayList;
 
@@ -35,11 +37,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
         TextView textView = holder.itemView.findViewById(R.id.message);
-        textView.setText(messages.get(position).toString());
+        Log.d("Message", messages.get(position).getText());
+        textView.setText(messages.get(position).getText());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return messages.size();
     }
 }
