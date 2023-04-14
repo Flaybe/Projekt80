@@ -28,6 +28,7 @@ public class LoginFragment extends Fragment {
 
     private FragmentLoginBinding binding;
     public final static String AZURE = "https://eventhub80.azurewebsites.net/";
+    public final static String LOCAL = "http://192.168.0.30:5000/";
     private Gson gson = new Gson();
 
     public LoginFragment() {

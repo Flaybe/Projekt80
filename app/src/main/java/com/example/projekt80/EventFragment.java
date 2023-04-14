@@ -131,7 +131,7 @@ public class EventFragment extends Fragment {
                 response -> {
                     messages = gson.fromJson(response.toString(), Messages.class);
                     Log.d("messages", messages.getMessages().toString());
-                    recyclerView.setAdapter(new ChatAdapter(messages.getMessages()));
+                    recyclerView.setAdapter(new ChatAdapter(messages.getMessages(), user));
                 },
                 error -> {
                     error.printStackTrace();
