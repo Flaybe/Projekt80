@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
@@ -27,9 +28,9 @@ import org.json.JSONObject;
 public class LoginFragment extends Fragment {
 
     private FragmentLoginBinding binding;
-    public final static String AZURE = "https://eventhub80.azurewebsites.net/";
-    public final static String LOCAL = "http://192.168.0.30:5000/";
-    private Gson gson = new Gson();
+    public final static String AZUR = "https://eventhub80.azurewebsites.net/";
+    public final static String AZURE = "http://192.168.0.30:5000/";
+    private final Gson gson = new Gson();
 
     public LoginFragment() {
         // Required empty public constructor
@@ -57,6 +58,8 @@ public class LoginFragment extends Fragment {
                 // ska göra url request
                 String url = AZURE + "/user/login";
 
+                //TODO Checka längden på lösenordet samt användernamnet
+
                 RequestQueue queue = Volley.newRequestQueue(getContext());
 
                 JSONObject json = new JSONObject();
@@ -78,11 +81,16 @@ public class LoginFragment extends Fragment {
 
                                 Toast.makeText(getContext(), "Welcome " + user.getName(), Toast.LENGTH_SHORT).show();
 
+                                NavOptions navOptions = new NavOptions.Builder()
+                                        .setPopUpTo(R.id.loginFragment, true)
+                                        .build();
+
                                 LoginFragmentDirections.ActionLoginFragmentToHomeFragment action =
                                         LoginFragmentDirections.actionLoginFragmentToHomeFragment(user);
 
                                 NavHostFragment.findNavController(LoginFragment.this)
-                                        .navigate(action);
+                                        .navigate(action, navOptions);
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

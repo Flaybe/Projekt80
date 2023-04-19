@@ -10,6 +10,9 @@ public class Event implements java.io.Serializable {
     private List<String> members;
     private List<Message> messages;
     private String creator;
+    private List<String> likes;
+
+
 
     public String getId() {
         return id;
@@ -57,5 +60,13 @@ public class Event implements java.io.Serializable {
 
     public void setCreator(String creator) {
         this.creator = creator;
+    }
+
+    public List<String> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<String> likes) {
+        this.likes = likes;
     }
 }

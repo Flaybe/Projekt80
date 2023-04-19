@@ -3,6 +3,7 @@ package com.example.projekt80;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
@@ -65,8 +66,11 @@ public class CreateEventFragment extends Fragment {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json, response -> {
                 Log.i("Response", response.toString());
                 Toast.makeText(getContext(), "Event created", Toast.LENGTH_SHORT).show();
+
+                // detta gör så man inte kommer tillbaka hit när man trycker back
                 NavHostFragment.findNavController(CreateEventFragment.this)
-                        .navigate(CreateEventFragmentDirections.actionCreateEventFragmentToEventFragment(user));
+                        .popBackStack(R.id.eventListFragment, false);
+
             }, error -> {
                 Log.e("Error", error.toString());
             })
