@@ -42,14 +42,18 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
-        TextView textView = holder.itemView.findViewById(R.id.message);
+        TextView message = holder.itemView.findViewById(R.id.message);
+        TextView author = holder.itemView.findViewById(R.id.author);
         Log.d("Message", messages.get(position).getText());
-        textView.setText(messages.get(position).getText());
-        holder.itemView.findViewById(R.id.chatLayout).setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+        message.setText(messages.get(position).getText());
 
         if(Objects.equals(messages.get(position).getAuthor(), user.getName())){
-            textView.setGravity(Gravity.RIGHT);
+            message.setGravity(Gravity.RIGHT);
             holder.itemView.findViewById(R.id.chatLayout).setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        }else{
+            message.setGravity(Gravity.LEFT);
+            holder.itemView.findViewById(R.id.chatLayout).setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+            author.setText(messages.get(position).getAuthor());
         }
 
     }

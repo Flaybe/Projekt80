@@ -11,10 +11,12 @@ import com.example.projekt80.R;
 public class ChatViewHolder extends RecyclerView.ViewHolder{
 
     TextView message;
+    TextView author;
 
 
     public ChatViewHolder(@NonNull View itemView) {
         super(itemView);
         message = itemView.findViewById(R.id.message);
+        author = itemView.findViewById(R.id.author);
     }
 }

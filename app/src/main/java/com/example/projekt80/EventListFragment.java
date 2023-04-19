@@ -54,7 +54,21 @@ public class EventListFragment extends Fragment {
 
         RecyclerView eventList = binding.eventList;
         eventList.setLayoutManager(new LinearLayoutManager(getContext()));
-        this.getEvents(eventList);
+        this.getAllEvents(eventList);
+
+        binding.joinedEvents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //  check if checkbox is checked
+                if (binding.joinedEvents.isChecked()) {
+                    //  if checked, show only joined events
+                    getJoinedEvents(eventList);
+                } else {
+                    //  if not checked, show all events
+                    getAllEvents(eventList);
+                }
+            }
+        });
 
         binding.createEvent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,11 +82,36 @@ public class EventListFragment extends Fragment {
     }
 
 
-    private void getEvents(RecyclerView recyclerView){
+    private void getAllEvents(RecyclerView recyclerView){
 
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
         String url = LoginFragment.AZURE + "/event/all";
+        StringRequest request = new StringRequest(Request.Method.GET, url,
+                response -> {
+                    Log.d("Events", response);
+                    Events events = gson.fromJson(response, Events.class);
+                    binding.eventList.setAdapter(new EventAdapter(events.getEvents(), user));
+                },
+                error -> {
+                    error.printStackTrace();
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + user.getAccessToken());
+                return headers;
+            }
+        };
+        queue.add(request);
+    }
+
+    private void getJoinedEvents(RecyclerView recyclerView){
+
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+
+        String url = LoginFragment.AZURE + "/user/" + user.getName() + "/events";
         StringRequest request = new StringRequest(Request.Method.GET, url,
                 response -> {
                     Log.d("Events", response);

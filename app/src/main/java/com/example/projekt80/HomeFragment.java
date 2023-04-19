@@ -3,6 +3,7 @@ package com.example.projekt80;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
@@ -82,8 +83,10 @@ public class HomeFragment extends Fragment {
                     }
                 };
 
+
                 NavHostFragment.findNavController(HomeFragment.this)
-                        .popBackStack(R.id.loginFragment, false);
+                        .navigate(R.id.loginFragment);
+
                 queue.add(stringRequest);
             }
 
