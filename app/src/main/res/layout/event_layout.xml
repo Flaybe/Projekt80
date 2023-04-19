@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
-    android:background="@drawable/border">
+    >
+
 
     <TextView
         android:id="@+id/eventName"
@@ -12,21 +13,19 @@
         android:layout_height="48dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:background="@drawable/border"
+        />
+
 
     <TextView
-        android:id="@+id/description"
+        android:id="@+id/info"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:text="Info"
+        />
 
-    <TextView
-        android:id="@+id/creator"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:textSize="20sp" />
 </LinearLayout>

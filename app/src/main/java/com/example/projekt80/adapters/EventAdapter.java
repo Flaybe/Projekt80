@@ -38,8 +38,27 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
                 .inflate(R.layout.event_layout, parent, false);
         EventViewHolder holder = new EventViewHolder(itemView);
 
+
+
+        holder.info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle the click event here
+                int position = holder.getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    // Get the event object at the clicked position
+                    Event event = events.get(position);
+                    // Navigate to the event fragment
+                    EventListFragmentDirections.ActionEventListFragmentToEventInfoFragment action =
+                            EventListFragmentDirections.actionEventListFragmentToEventInfoFragment(event, user);
+                    NavController navController = Navigation.findNavController(v);
+                    navController.navigate(action);
+                }
+            }
+        });
+
         // Set onClickListener to the whole border
-        itemView.setOnClickListener(new View.OnClickListener() {
+        holder.eventName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Handle the click event here
@@ -63,21 +82,15 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
     public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
 
         TextView name = holder.itemView.findViewById(R.id.eventName);
-        TextView description = holder.itemView.findViewById(R.id.description);
-        TextView creator = holder.itemView.findViewById(R.id.creator);
-
-
         name.setText(events.get(position).getName());
-
-        String desc = events.get(position).getDescription();
-        description.setText(desc.length() > 8 ?  desc.substring(0, 8) + "..." : desc);
-
-        creator.setText(events.get(position).getCreator());
 
     }
 
     @Override
     public int getItemCount() {
+        if (events == null) {
+            return 0;
+        }
         return events.size();
     }
 }
