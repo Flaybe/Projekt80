@@ -51,7 +51,6 @@ public class FriendsFragment extends Fragment {
     }
 
 
-
     private void getFriends() {
         String url = LoginFragment.AZURE + "/user/friends";
 
