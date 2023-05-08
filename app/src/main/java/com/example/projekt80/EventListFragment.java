@@ -54,7 +54,7 @@ public class EventListFragment extends Fragment {
 
         RecyclerView eventList = binding.eventList;
         eventList.setLayoutManager(new LinearLayoutManager(getContext()));
-        this.getAllEvents(eventList);
+        getAllEvents();
 
         binding.joinedEvents.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,10 +62,10 @@ public class EventListFragment extends Fragment {
                 //  check if checkbox is checked
                 if (binding.joinedEvents.isChecked()) {
                     //  if checked, show only joined events
-                    getJoinedEvents(eventList);
+                    getJoinedEvents();
                 } else {
                     //  if not checked, show all events
-                    getAllEvents(eventList);
+                    getAllEvents();
                 }
             }
         });
@@ -82,7 +82,7 @@ public class EventListFragment extends Fragment {
     }
 
 
-    private void getAllEvents(RecyclerView recyclerView){
+    private void getAllEvents(){
 
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
@@ -107,7 +107,7 @@ public class EventListFragment extends Fragment {
         queue.add(request);
     }
 
-    private void getJoinedEvents(RecyclerView recyclerView){
+    private void getJoinedEvents(){
 
         RequestQueue queue = Volley.newRequestQueue(getContext());
 

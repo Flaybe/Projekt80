@@ -28,11 +28,9 @@ import org.json.JSONObject;
 public class LoginFragment extends Fragment {
 
     private FragmentLoginBinding binding;
-    public final static String A = "https://eventhub80.azurewebsites.net/";
-    public final static String AZURE = "http://192.168.1.142:5000";
-    // Azure:http://192.168.0.30:5000/
-    //local: http://192.168.1.142:5000
-    private Gson gson = new Gson();
+    public final static String AZUR = "https://eventhub80.azurewebsites.net/";
+    public final static String AZURE = "http://192.168.0.30:5000/";
+    private final Gson gson = new Gson();
 
     public LoginFragment() {
         // Required empty public constructor
@@ -46,6 +44,7 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
+
         binding.registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
