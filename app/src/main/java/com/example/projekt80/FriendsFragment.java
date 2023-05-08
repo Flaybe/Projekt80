@@ -31,6 +31,7 @@ public class FriendsFragment extends Fragment {
     private FragmentFriendsBinding binding;
     private User user;
     private final Gson gson = new Gson();
+    private boolean requests = false;
 
     public FriendsFragment() {
         // Required empty public constructor
@@ -52,8 +53,10 @@ public class FriendsFragment extends Fragment {
         binding.friendList.setLayoutManager(new LinearLayoutManager(getContext()));
 
         if(binding.friendRequests.isChecked()){
+            requests = true;
             getRequests();
         } else {
+            requests = false;
             getFriends();
         }
 
@@ -87,9 +90,12 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(binding.friendRequests.isChecked()){
+                    requests = true;
                     getRequests();
                 } else {
+                    requests = false;
                     getFriends();
+
                 }
             }
         });
@@ -99,6 +105,8 @@ public class FriendsFragment extends Fragment {
 
 
     private void getFriends() {
+        binding.foundFriendsText.setText("Friends");
+
         String url = LoginFragment.AZURE + "/user/friends";
 
         RequestQueue queue = Volley.newRequestQueue(getContext());
@@ -106,7 +114,7 @@ public class FriendsFragment extends Fragment {
         StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
             Log.d("Friends", response);
             Friends friends = gson.fromJson(response, Friends.class);
-            binding.friendList.setAdapter(new FriendAdapter(friends.getFriends()));
+            binding.friendList.setAdapter(new FriendAdapter(friends.getFriends(), requests, user));
 
         }, error -> {
             Log.e("Friends", error.toString());
@@ -123,14 +131,17 @@ public class FriendsFragment extends Fragment {
 
 
     private void getRequests(){
+
+        binding.foundFriendsText.setText("Friend Requests");
+
         String url = LoginFragment.AZURE + "/user/friends/requests";
 
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
         StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
-            Log.d("Requests", response);
             Friends friends = gson.fromJson(response, Friends.class);
-            binding.friendList.setAdapter(new FriendAdapter(friends.getFriends()));
+            Log.d("Requests", friends.getFriends().toString());
+            binding.friendList.setAdapter(new FriendAdapter(friends.getFriends(), requests, user));
 
         }, error -> {
             Log.e("Friends", error.toString());

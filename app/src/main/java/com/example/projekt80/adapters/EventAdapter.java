@@ -26,6 +26,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
     private final ArrayList<Event> events;
     private User user;
 
+
     public EventAdapter(ArrayList<Event> events, User user) {
         this.events = events;
         this.user = user;
