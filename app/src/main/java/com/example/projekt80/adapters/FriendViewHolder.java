@@ -10,11 +10,14 @@ import com.example.projekt80.R;
 
 public class FriendViewHolder extends RecyclerView.ViewHolder{
 
-    TextView name;
+    TextView friendName;
+    TextView accept_button;
 
     public FriendViewHolder(@NonNull View itemView) {
         super(itemView);
-        name = itemView.findViewById(R.id.name);
+        friendName = itemView.findViewById(R.id.friend_name);
+        accept_button = itemView.findViewById(R.id.accept_button);
+
     }
 
 
