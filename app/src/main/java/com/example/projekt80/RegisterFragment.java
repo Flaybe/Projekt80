@@ -51,6 +51,10 @@ public class RegisterFragment extends Fragment {
               @Override
               public void onClick(View v) {
 
+                  if (!checkCredentials()) {
+                      return;
+                  }
+
                   String url = LoginFragment.AZURE + "/user/register";
                   RequestQueue queue = Volley.newRequestQueue(getContext());
 
@@ -86,4 +90,33 @@ public class RegisterFragment extends Fragment {
          });
         return binding.getRoot();
     }
+
+    private boolean checkCredentials() {
+        if (binding.TextPersonName.getText().toString().isEmpty()) {
+            binding.TextPersonName.setError("Please enter a username");
+            return false;
+        }
+        if (binding.TextPassword.getText().toString().isEmpty()) {
+            binding.TextPassword.setError("Please enter a password");
+            return false;
+        }
+        if (binding.TextPassword.getText().toString().length() < 6) {
+            binding.TextPassword.setError("Password must be at least 6 characters");
+            return false;
+        }
+        if (binding.TextPassword.getText().toString().length() > 20) {
+            binding.TextPassword.setError("Password must be less than 20 characters");
+            return false;
+        }
+        if (binding.TextPassword.getText().toString().contains(" ")) {
+            binding.TextPassword.setError("Password must not contain spaces");
+            return false;
+        }
+        if (!(binding.TextPassword.getText().toString().equals(binding.TextPassword2.getText().toString()))) {
+            binding.TextPassword2.setError("Passwords must match");
+            return false;
+        }
+        return true;
+    }
+
 }
