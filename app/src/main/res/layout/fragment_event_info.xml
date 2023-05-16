@@ -36,11 +36,11 @@
         android:id="@+id/likeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/circle"
-        android:text="Like"
-        android:foreground="@drawable/ripple_effect"
-        android:textSize="20sp"
         android:layout_margin="10dp"
+        android:background="@drawable/circle"
+        android:foreground="@drawable/ripple_effect"
+        android:text="Like"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/infoText" />
@@ -55,5 +55,16 @@
         app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/infoText" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/members"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="1dp"
+        app:layout_constraintBottom_toTopOf="@+id/joinButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/likeButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
