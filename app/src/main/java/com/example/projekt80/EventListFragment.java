@@ -54,7 +54,12 @@ public class EventListFragment extends Fragment {
 
         RecyclerView eventList = binding.eventList;
         eventList.setLayoutManager(new LinearLayoutManager(getContext()));
-        getAllEvents();
+
+        if (binding.joinedEvents.isChecked()) {
+            getJoinedEvents();
+        } else {
+            getAllEvents();
+        }
 
         binding.joinedEvents.setOnClickListener(new View.OnClickListener() {
             @Override

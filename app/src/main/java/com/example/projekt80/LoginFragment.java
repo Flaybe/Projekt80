@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -59,8 +60,6 @@ public class LoginFragment extends Fragment {
                 // ska göra url request
                 String url = AZURE + "/user/login";
 
-                //TODO Checka längden på lösenordet samt användernamnet
-
                 RequestQueue queue = Volley.newRequestQueue(getContext());
 
                 JSONObject json = new JSONObject();
@@ -82,15 +81,11 @@ public class LoginFragment extends Fragment {
 
                                 Toast.makeText(getContext(), "Welcome " + user.getName(), Toast.LENGTH_SHORT).show();
 
-                                NavOptions navOptions = new NavOptions.Builder()
-                                        .setPopUpTo(R.id.loginFragment, true)
-                                        .build();
-
                                 LoginFragmentDirections.ActionLoginFragmentToHomeFragment action =
                                         LoginFragmentDirections.actionLoginFragmentToHomeFragment(user);
+                                NavController navController = NavHostFragment.findNavController(LoginFragment.this);
 
-                                NavHostFragment.findNavController(LoginFragment.this)
-                                        .navigate(action, navOptions);
+                                navController.navigate(action);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();

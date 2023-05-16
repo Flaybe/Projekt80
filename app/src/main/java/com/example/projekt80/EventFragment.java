@@ -1,8 +1,10 @@
 package com.example.projekt80;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +20,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.projekt80.adapters.ChatAdapter;
 import com.example.projekt80.databinding.FragmentEventBinding;
@@ -89,7 +92,15 @@ public class EventFragment extends Fragment {
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, json,
                 response -> {
-                    Log.d("Response", String.valueOf(response));
+                    try {
+                        String value = response.get("response").toString();
+                        if(value.equals("User not in event")){
+                            showChoiceDialog("You are not in this event. Do you want to join?");
+                        }
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }
+                    Log.d("Response", response.toString());
                     this.getMessages(binding.chat);
                     binding.messageText.setText("");
                     // drop keyboard
@@ -99,6 +110,8 @@ public class EventFragment extends Fragment {
 
                     // Hide the keyboard
                     imm.hideSoftInputFromWindow(binding.messageText.getWindowToken(), 0);
+
+
                 },
                 error -> {
                     error.printStackTrace();
@@ -145,5 +158,49 @@ public class EventFragment extends Fragment {
             }
         };
         queue.add(request);
+    }
+
+    private void showChoiceDialog(String message){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Join Event")
+                .setMessage(message)
+                .setPositiveButton("Join", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        String url = LoginFragment.AZURE + "/event/join/" + event.getName();
+
+                        StringRequest request = new StringRequest(Request.Method.POST, url,
+                                response -> {
+                                    Toast.makeText(getContext(), "Event joined", Toast.LENGTH_SHORT).show();
+                                },
+                                error -> {
+                                    error.printStackTrace();
+                                }
+                        ) {
+                            @Override
+                            public Map<String, String> getHeaders() throws AuthFailureError {
+                                Map<String, String> headers = new HashMap<>();
+                                headers.put("Authorization", "Bearer " + user.getAccessToken());
+                                return headers;
+                            }
+                        };
+                        queue.add(request);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Handle the "Cancel" button click
+                        // Perform any necessary action when the user chooses to cancel joining the event
+
+                        // Rest of your code...
+                    }
+                })
+                .show();
+    }
+
+    private void joinEvent(){
+
     }
 }
