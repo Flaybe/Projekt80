@@ -3,6 +3,8 @@ package com.example.projekt80;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -11,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -30,6 +33,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 
 public class EventInfoFragment extends Fragment {
@@ -58,6 +62,7 @@ public class EventInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
         binding = FragmentEventInfoBinding.inflate(inflater, container, false);
         EventInfoFragmentArgs args = EventInfoFragmentArgs.fromBundle(getArguments());
         event = args.getEvent();
@@ -74,11 +79,18 @@ public class EventInfoFragment extends Fragment {
         binding.members.setAdapter(new MembersAdapter(event.getMembers(), user));
         binding.infoText.setText(info.toString());
 
+        if (event.getMembers().contains(user.getName())) {
+            binding.joinButton.setText("Leave Event");
+        }
+
         binding.joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NavHostFragment.findNavController(EventInfoFragment.this)
-                        .navigate(EventInfoFragmentDirections.actionEventInfoFragmentToEventFragment(event, user));
+                if(event.getMembers().contains(user.getName())){
+                    leaveEvent(event.getName(), binding.getRoot());
+                } else {
+                    joinEvent(event.getName());
+                }
 
             }
         });
@@ -138,6 +150,57 @@ public class EventInfoFragment extends Fragment {
         };
         queue.add(request);
 
+    }
+    private void joinEvent(String eventName){
+        RequestQueue queue = Volley.newRequestQueue(requireContext());
+        String url = LoginFragment.AZURE + "event/join/" + eventName;
+
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                response -> {
+                    Log.d("join", response);
+                    NavHostFragment.findNavController(EventInfoFragment.this)
+                            .navigate(EventInfoFragmentDirections.actionEventInfoFragmentToEventFragment(event, user));
+                    Toast.makeText(requireContext(), "Joined event", Toast.LENGTH_SHORT).show();
+                },
+                error -> {
+                    error.printStackTrace();
+                    Toast.makeText(requireContext(), "Error joining event", Toast.LENGTH_SHORT).show();
+                }
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError{
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + user.getAccessToken());
+                return headers;
+            }
+        };
+        queue.add(request);
+
+    }
+    private void leaveEvent(String eventName, View view){
+        RequestQueue queue = Volley.newRequestQueue(requireContext());
+        String url = LoginFragment.AZURE + "event/leave/" + eventName;
+
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                response -> {
+                    Log.d("leave", response);
+                    NavController navController = Navigation.findNavController(view);
+                    navController.popBackStack();
+                    Toast.makeText(requireContext(), "Left event", Toast.LENGTH_SHORT).show();
+                },
+                error -> {
+                    error.printStackTrace();
+                    Toast.makeText(requireContext(), "Error leaving event", Toast.LENGTH_SHORT).show();
+                }
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError{
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + user.getAccessToken());
+                return headers;
+            }
+        };
+        queue.add(request);
     }
 
 }

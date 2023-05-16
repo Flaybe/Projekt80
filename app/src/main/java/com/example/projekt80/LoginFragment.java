@@ -29,8 +29,10 @@ import org.json.JSONObject;
 public class LoginFragment extends Fragment {
 
     private FragmentLoginBinding binding;
-    public final static String AZUR = "https://eventhub80.azurewebsites.net/";
-    public final static String AZURE = "http://192.168.0.30:5000/";
+
+    //Azure api: https://eventhub80.azurewebsites.net/
+    public final static String AZURE = "https://eventhub80.azurewebsites.net/";
+
     private final Gson gson = new Gson();
 
     public LoginFragment() {
