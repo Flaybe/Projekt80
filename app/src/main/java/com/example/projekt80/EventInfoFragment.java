@@ -192,7 +192,7 @@ public class EventInfoFragment extends Fragment {
 
     private void joinEvent(String eventName){
         RequestQueue queue = Volley.newRequestQueue(requireContext());
-        String url = LoginFragment.AZURE + "event/join/" + eventName;
+        String url = LoginFragment.AZURE + "/event/join/" + eventName;
 
         StringRequest request = new StringRequest(Request.Method.POST, url,
                 response -> {
@@ -219,7 +219,7 @@ public class EventInfoFragment extends Fragment {
     }
     private void leaveEvent(String eventName, View view){
         RequestQueue queue = Volley.newRequestQueue(requireContext());
-        String url = LoginFragment.AZURE + "event/leave/" + eventName;
+        String url = LoginFragment.AZURE + "/event/leave/" + event.getName();
 
         StringRequest request = new StringRequest(Request.Method.POST, url,
                 response -> {
