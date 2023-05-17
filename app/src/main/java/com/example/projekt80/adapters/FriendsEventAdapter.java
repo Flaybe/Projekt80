@@ -43,13 +43,12 @@ public class FriendsEventAdapter extends RecyclerView.Adapter<FriendsEventAdapte
     public void onBindViewHolder(@NonNull FriendsEventAdapter.FriendsEventViewHolder holder, int position) {
         Event event = events.get(position);
         holder.eventName.setText(event.getName());
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(v.getContext(), "Clicked on " + event.getName(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        holder.info.setOnClickListener(v ->
+            navToEventInfo(v, holder)
+        );
+        holder.eventName.setOnClickListener(v ->
+            navToEventChat(v, holder)
+        );
     }
 
     @Override

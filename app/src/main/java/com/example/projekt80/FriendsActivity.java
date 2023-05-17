@@ -73,7 +73,7 @@ public class FriendsActivity extends Fragment {
 
         StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
             Events events = gson.fromJson(response, Events.class);
-            binding.FriendEvents.setAdapter(new EventAdapter(events.getEvents(), user));
+            binding.FriendEvents.setAdapter(new FriendsEventAdapter(events.getEvents(), user));
             Log.d("Events", events.getEvents().toString());
 
         }, error -> {
