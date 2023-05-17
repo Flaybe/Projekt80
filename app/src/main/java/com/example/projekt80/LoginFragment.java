@@ -29,9 +29,9 @@ import org.json.JSONObject;
 public class LoginFragment extends Fragment {
 
     private FragmentLoginBinding binding;
-
+    //localhost api: http://192.168.1.188:5000
     //Azure api: https://eventhub80.azurewebsites.net/
-    public final static String AZURE = " http://192.168.0.30:5000/";
+    public final static String AZURE = "http://192.168.1.188:5000";
 
     private final Gson gson = new Gson();
 
@@ -62,7 +62,7 @@ public class LoginFragment extends Fragment {
                 // ska göra url request
                 String url = AZURE + "/user/login";
 
-                RequestQueue queue = Volley.newRequestQueue(getContext());
+                RequestQueue queue = Volley.newRequestQueue(requireContext());
 
                 JSONObject json = new JSONObject();
                 try {
