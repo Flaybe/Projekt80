@@ -56,7 +56,6 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MembersV
         holder.name.setText(member);
 
         if(friends != null) {
-            holder.dismiss_button.setVisibility(View.GONE);
             if (friends.getFriends().contains(member)) {
                 holder.accept_button.setVisibility(View.GONE);
             }if(member.equals(user.getName())){
@@ -102,13 +101,11 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MembersV
     public static class MembersViewHolder extends RecyclerView.ViewHolder {
         TextView name;
         TextView accept_button;
-        TextView dismiss_button;
 
         public MembersViewHolder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.friend_name);
             accept_button = itemView.findViewById(R.id.accept_button);
-            dismiss_button = itemView.findViewById(R.id.dismiss);
         }
     }
 
