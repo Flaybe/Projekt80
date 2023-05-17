@@ -53,7 +53,10 @@ public class FriendsEventAdapter extends RecyclerView.Adapter<FriendsEventAdapte
 
     @Override
     public int getItemCount() {
-        return events.size();
+        if (events == null)
+            return 0;
+        else
+            return events.size();
     }
 
     public static class FriendsEventViewHolder extends RecyclerView.ViewHolder {

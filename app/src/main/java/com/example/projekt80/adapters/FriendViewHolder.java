@@ -12,12 +12,13 @@ public class FriendViewHolder extends RecyclerView.ViewHolder{
 
     TextView friendName;
     TextView accept_button;
+    TextView dismiss_button;
 
     public FriendViewHolder(@NonNull View itemView) {
         super(itemView);
         friendName = itemView.findViewById(R.id.friend_name);
         accept_button = itemView.findViewById(R.id.accept_button);
-
+        dismiss_button = itemView.findViewById(R.id.dismiss);
     }
 
 

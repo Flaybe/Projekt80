@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".EventInfoFragment" >
-
     <Button
         android:id="@+id/joinButton"
         android:layout_width="match_parent"
@@ -16,7 +15,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
-
     <TextView
         android:id="@+id/infoText"
         android:layout_width="match_parent"
@@ -29,9 +27,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-
         />
-
     <TextView
         android:id="@+id/likeButton"
         android:layout_width="wrap_content"
@@ -44,18 +40,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/infoText" />
-
     <TextView
         android:id="@+id/likesText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:text="Likes: 0"
+        android:fontFamily="sans-serif-black"
         android:layout_margin="10dp"
         app:layout_constraintEnd_toStartOf="@+id/likeButton"
         app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/infoText" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/members"
         android:layout_width="0dp"
@@ -66,5 +61,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/likeButton" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
