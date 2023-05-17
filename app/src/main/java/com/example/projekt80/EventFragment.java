@@ -73,19 +73,19 @@ public class EventFragment extends Fragment {
 
 
         binding.sendButton.setOnClickListener(view -> {
-            this.sendMessage();
+            this.sendMessage(binding.messageText.getText().toString());
         });
 
         return binding.getRoot();
     }
 
 
-    private void sendMessage(){
+    private void sendMessage(String message){
         String url = LoginFragment.AZURE + "/event/send/" + event.getName();
 
         JSONObject json = new JSONObject();
         try {
-            json.put("text", binding.messageText.getText().toString());
+            json.put("text", message);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -95,7 +95,7 @@ public class EventFragment extends Fragment {
                     try {
                         String value = response.get("response").toString();
                         if(value.equals("User not in event")){
-                            showChoiceDialog("You are not in this event. Do you want to join?");
+                            showChoiceDialog("You are not in this event. Do you want to join?", message);
                         }
                     }catch (JSONException e){
                         e.printStackTrace();
@@ -160,10 +160,10 @@ public class EventFragment extends Fragment {
         queue.add(request);
     }
 
-    private void showChoiceDialog(String message){
+    private void showChoiceDialog(String prompt, String message){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Join Event")
-                .setMessage(message)
+                .setMessage(prompt)
                 .setPositiveButton("Join", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -173,6 +173,7 @@ public class EventFragment extends Fragment {
                         StringRequest request = new StringRequest(Request.Method.POST, url,
                                 response -> {
                                     Toast.makeText(getContext(), "Event joined", Toast.LENGTH_SHORT).show();
+                                    sendMessage(message);
                                 },
                                 error -> {
                                     error.printStackTrace();
@@ -191,16 +192,11 @@ public class EventFragment extends Fragment {
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Handle the "Cancel" button click
-                        // Perform any necessary action when the user chooses to cancel joining the event
-
-                        // Rest of your code...
+                        dialog.dismiss();
                     }
                 })
                 .show();
     }
 
-    private void joinEvent(){
 
-    }
 }

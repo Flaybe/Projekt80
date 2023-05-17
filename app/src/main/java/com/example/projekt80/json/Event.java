@@ -69,4 +69,8 @@ public class Event implements java.io.Serializable {
     public void setLikes(List<String> likes) {
         this.likes = likes;
     }
+
+    public void addMember(String name) {
+        members.add(name);
+    }
 }

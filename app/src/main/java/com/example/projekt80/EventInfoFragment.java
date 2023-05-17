@@ -200,6 +200,7 @@ public class EventInfoFragment extends Fragment {
                     NavHostFragment.findNavController(EventInfoFragment.this)
                             .navigate(EventInfoFragmentDirections.actionEventInfoFragmentToEventFragment(event, user));
                     Toast.makeText(requireContext(), "Joined event", Toast.LENGTH_SHORT).show();
+                    event.addMember(user.getName());
                 },
                 error -> {
                     error.printStackTrace();
