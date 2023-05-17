@@ -31,8 +31,8 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MembersV
 
     private final List<String> members;
     private Friends friends;
-    private Gson gson = new Gson();
-    private User user;
+    private final Gson gson = new Gson();
+    private final User user;
 
     public MembersAdapter(List<String> members, User user) {
         this.members = members;
@@ -55,7 +55,7 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MembersV
         // Bind the data to the views in each item
         String member = members.get(position);
         holder.name.setText(member);
-        Log.d("Boolean2", String.valueOf(friends));
+
         if(friends != null) {
             if (friends.getFriends().contains(member)) {
                 holder.accept_button.setVisibility(View.GONE);
@@ -119,7 +119,6 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MembersV
         StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
             Log.d("Friends", response);
             friends = gson.fromJson(response, Friends.class);
-            notifyItemRangeChanged(0, members.size());
 
         }, error -> {
             Log.e("Friends", error.toString());
