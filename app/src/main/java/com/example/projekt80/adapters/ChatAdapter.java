@@ -51,6 +51,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolder>{
             message.setGravity(Gravity.RIGHT);
             holder.itemView.findViewById(R.id.chatLayout).setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         }else{
+
             message.setGravity(Gravity.LEFT);
             holder.itemView.findViewById(R.id.chatLayout).setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
             author.setText(messages.get(position).getAuthor());
