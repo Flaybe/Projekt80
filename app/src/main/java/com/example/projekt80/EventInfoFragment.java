@@ -1,5 +1,6 @@
 package com.example.projekt80;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -25,6 +26,7 @@ import com.example.projekt80.adapters.MembersAdapter;
 import com.example.projekt80.databinding.FragmentEventInfoBinding;
 import com.example.projekt80.json.Event;
 import com.example.projekt80.json.Events;
+import com.example.projekt80.json.Friends;
 import com.example.projekt80.json.User;
 import com.google.gson.Gson;
 
@@ -44,7 +46,7 @@ public class EventInfoFragment extends Fragment {
 
     private User user;
 
-    private StringBuilder info = new StringBuilder();
+    private final StringBuilder info = new StringBuilder();
 
     private final Gson gson = new Gson();
 
@@ -68,6 +70,17 @@ public class EventInfoFragment extends Fragment {
         event = args.getEvent();
         user = args.getUser();
 
+        getFriends(getContext(), new FriendsCallback() {
+            @Override
+            public void onSuccess(Friends friends) {
+                binding.members.setLayoutManager(new LinearLayoutManager(getContext()));
+                binding.members.setAdapter(new MembersAdapter(event.getMembers(), user, friends));
+            }
+            @Override
+            public void onError(String message) {
+                Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+            }
+        });
 
         info.delete(0, info.length());
         info.append("Name: ").append(event.getName()).append("\n\n");
@@ -75,8 +88,7 @@ public class EventInfoFragment extends Fragment {
         info.append("Creator: ").append(event.getCreator());
         getLikes(event.getName());
 
-        binding.members.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.members.setAdapter(new MembersAdapter(event.getMembers(), user));
+
         binding.infoText.setText(info.toString());
 
         if (event.getMembers().contains(user.getName())) {
@@ -149,8 +161,35 @@ public class EventInfoFragment extends Fragment {
             }
         };
         queue.add(request);
-
     }
+
+
+    private void getFriends(Context context, FriendsCallback callback) {
+
+        String url = LoginFragment.AZURE + "/user/friends";
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
+            Log.d("Friends", response);
+            Friends friends = gson.fromJson(response, Friends.class);
+            callback.onSuccess(friends);
+
+        }, error -> {
+            Log.e("Friends", error.toString());
+            callback.onError(error.toString());
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + user.getAccessToken());
+                return headers;
+            }
+        };
+        queue.add(request);
+    }
+
+
     private void joinEvent(String eventName){
         RequestQueue queue = Volley.newRequestQueue(requireContext());
         String url = LoginFragment.AZURE + "event/join/" + eventName;
@@ -204,3 +243,4 @@ public class EventInfoFragment extends Fragment {
     }
 
 }
+

@@ -34,9 +34,10 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MembersV
     private final Gson gson = new Gson();
     private final User user;
 
-    public MembersAdapter(List<String> members, User user) {
+    public MembersAdapter(List<String> members, User user, Friends friends) {
         this.members = members;
         this.user = user;
+        this.friends = friends;
     }
 
     @NonNull
@@ -45,8 +46,6 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MembersV
         // Create a new view for each item in the RecyclerView
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.friend_layout, parent, false);
-        Log.d("Boolean", String.valueOf(friends != null));
-        getFriends(parent.getContext());
         return new MembersViewHolder(itemView);
     }
 
@@ -110,26 +109,4 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MembersV
         }
     }
 
-    private void getFriends(Context context) {
-
-        String url = LoginFragment.AZURE + "/user/friends";
-
-        RequestQueue queue = Volley.newRequestQueue(context);
-
-        StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
-            Log.d("Friends", response);
-            friends = gson.fromJson(response, Friends.class);
-
-        }, error -> {
-            Log.e("Friends", error.toString());
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Authorization", "Bearer " + user.getAccessToken());
-                return headers;
-            }
-        };
-        queue.add(request);
-    }
 }
