@@ -46,44 +46,25 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendViewHolder>{
         Log.d("requests", String.valueOf(requests));
         if (requests) {
             holder.accept_button.setVisibility(View.VISIBLE);
+
             holder.accept_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int position = holder.getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        String friend = friends.get(position);
-                        String url = LoginFragment.AZURE + "/user/friends/accept/" + friend;
-
-                        RequestQueue queue = Volley.newRequestQueue(v.getContext());
-
-                        StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST, url,
-                                response -> {
-                                    Log.d("response", response);
-                                    Toast.makeText(v.getContext(), "Friend request accepted", Toast.LENGTH_SHORT).show();
-                                    friends.remove(position);
-                                    notifyItemRemoved(position);
-                                    notifyItemRangeChanged(position, friends.size());
-                                }, error -> {
-                                    Log.d("error", error.toString());
-                                })            {
-                            @Override
-                            public Map<String, String> getHeaders() throws AuthFailureError {
-                                Map<String, String> headers = new HashMap<>();
-                                headers.put("Authorization", "Bearer " + user.getAccessToken());
-                                return headers;
-                            }
-                        };
-
-
-                        queue.add(stringRequest);
-                    }
+                    acceptFriend(holder, v);
                 }
             });
         } else {
             holder.accept_button.setVisibility(View.GONE);
+            holder.dismiss_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    removeFriend(holder, v);
+                }
+            });
         }
         return holder;
     }
+
 
     @Override
     public void onBindViewHolder(@NonNull FriendViewHolder holder, int position) {
@@ -97,6 +78,65 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendViewHolder>{
             return friends.size();
         } else {
             return 0;
+        }
+    }
+
+
+    private void removeFriend(FriendViewHolder holder, View v){
+        int position = holder.getAdapterPosition();
+        if (position != RecyclerView.NO_POSITION) {
+            String friend = friends.get(position);
+            String url = LoginFragment.AZURE + "/user/friends/remove/" + friend;
+
+            RequestQueue queue = Volley.newRequestQueue(v.getContext());
+
+            StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST, url,
+                    response -> {
+                        Log.d("response", response);
+                        Toast.makeText(v.getContext(), "Friend removed", Toast.LENGTH_SHORT).show();
+                        friends.remove(position);
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, friends.size());
+                    }, error -> {
+                Log.d("error", error.toString());
+            })            {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("Authorization", "Bearer " + user.getAccessToken());
+                    return headers;
+                }
+            };
+            queue.add(stringRequest);
+        }
+    }
+
+    private void acceptFriend(FriendViewHolder holder, View v) {
+        int position = holder.getAdapterPosition();
+        if (position != RecyclerView.NO_POSITION) {
+            String friend = friends.get(position);
+            String url = LoginFragment.AZURE + "/user/friends/accept/" + friend;
+
+            RequestQueue queue = Volley.newRequestQueue(v.getContext());
+
+            StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST, url,
+                    response -> {
+                        Log.d("response", response);
+                        Toast.makeText(v.getContext(), "Friend request accepted", Toast.LENGTH_SHORT).show();
+                        friends.remove(position);
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, friends.size());
+                    }, error -> {
+                Log.d("error", error.toString());
+            })            {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("Authorization", "Bearer " + user.getAccessToken());
+                    return headers;
+                }
+            };
+            queue.add(stringRequest);
         }
     }
 }
