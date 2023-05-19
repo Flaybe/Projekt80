@@ -74,7 +74,7 @@ public class EventInfoFragment extends Fragment {
             @Override
             public void onSuccess(Friends friends) {
                 binding.members.setLayoutManager(new LinearLayoutManager(getContext()));
-                binding.members.setAdapter(new MembersAdapter(event.getMembers(), user, friends));
+                binding.members.setAdapter(new MembersAdapter(event.getMembers(), user, friends, event.getName()));
             }
             @Override
             public void onError(String message) {

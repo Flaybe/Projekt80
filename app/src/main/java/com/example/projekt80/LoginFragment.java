@@ -32,9 +32,8 @@ public class LoginFragment extends Fragment {
     //localhost api: http://192.168.1.188:5000
     //Azure api: https://eventhub80.azurewebsites.net
     public final static String AZURE = "http://192.168.1.188:5000";
-
+    private User loggedInUser;
     private final Gson gson = new Gson();
-
     public LoginFragment() {
         // Required empty public constructor
     }
@@ -80,6 +79,7 @@ public class LoginFragment extends Fragment {
                                 String AccessToken = response.get("access_token").toString();
                                 User user = gson.fromJson(json.toString(), User.class);
                                 user.setAccessToken(AccessToken);
+                                loggedInUser = user;
 
                                 Toast.makeText(getContext(), "Welcome " + user.getName(), Toast.LENGTH_SHORT).show();
 
@@ -106,5 +106,8 @@ public class LoginFragment extends Fragment {
             }
         });
         return binding.getRoot();
+    }
+    public User getLoggedInUser() {
+        return loggedInUser;
     }
 }

@@ -83,13 +83,11 @@ public class HomeFragment extends Fragment {
                     }
                 };
 
-
                 NavHostFragment.findNavController(HomeFragment.this)
                         .navigate(R.id.loginFragment);
 
                 queue.add(stringRequest);
             }
-
         });
 
         return binding.getRoot();

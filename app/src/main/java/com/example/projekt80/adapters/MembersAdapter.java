@@ -14,24 +14,34 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.projekt80.LoginFragment;
+import com.example.projekt80.OnlineMembersCallback;
 import com.example.projekt80.R;
 import com.example.projekt80.databinding.FragmentFriendsBinding;
 import com.example.projekt80.json.Friends;
+import com.example.projekt80.json.OnlineMembers;
 import com.example.projekt80.json.User;
 import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MembersViewHolder> {
     private final List<String> members;
+    private List<String> onlineMembersGlobal = new ArrayList<>();
     private Friends friends;
     private final Gson gson = new Gson();
     private final User user;
+    private final String event;
 
-    public MembersAdapter(List<String> members, User user, Friends friends) {
+    public MembersAdapter(List<String> members, User user, Friends friends, String event) {
         this.members = members;
         this.user = user;
         this.friends = friends;
+        this.event = event;
     }
 
     @NonNull
@@ -40,6 +50,21 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MembersV
         // Create a new view for each item in the RecyclerView
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.friend_layout, parent, false);
+        MembersViewHolder holder = new MembersViewHolder(itemView);
+        onlineMembers(itemView, new OnlineMembersCallback() {
+            @Override
+            public void onSuccess(OnlineMembers onlineMembers) {
+                onlineMembersGlobal = onlineMembers.getMembers();
+                for (int i = 0;i<getItemCount() ;i++){
+                    onBindViewHolder(holder, i);
+                }
+            }
+            @Override
+            public void onError(String message) {
+                Log.d("error", message);
+            }
+        });
+
         return new MembersViewHolder(itemView);
     }
 
@@ -59,6 +84,12 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MembersV
             } else {
                 holder.accept_button.setVisibility(View.VISIBLE);
                 holder.accept_button.setOnClickListener(v -> sendFriendRequest(v.getContext(), member, holder));
+            }if (onlineMembersGlobal != null) {
+                if (onlineMembersGlobal.contains(member)) {
+                    holder.name.setBackgroundResource(R.drawable.online);
+                } else {
+                    holder.name.setBackgroundResource(R.drawable.offline);
+                }
             }
         }
     }
@@ -102,5 +133,28 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MembersV
             accept_button = itemView.findViewById(R.id.accept_button);
             dismiss_button = itemView.findViewById(R.id.dismiss);
         }
+    }
+    public void onlineMembers(View v, OnlineMembersCallback callback){
+        RequestQueue queue = Volley.newRequestQueue(v.getContext());
+        String url = LoginFragment.AZURE + "/user/members/online/" + event ;
+        System.out.println("testing online members");
+        StringRequest request = new StringRequest(com.android.volley.Request.Method.GET, url,
+                response -> {;
+                    OnlineMembers onlineMembers = gson.fromJson(response, OnlineMembers.class);
+                    System.out.println(onlineMembers.getMembers());
+                    callback.onSuccess(onlineMembers);
+
+                }, error -> {
+                    callback.onError(error.getMessage());
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + user.getAccessToken());
+                return headers;
+            }
+        };
+        queue.add(request);
     }
 }
