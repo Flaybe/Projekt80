@@ -1,8 +1,10 @@
 package com.example.projekt80;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -52,4 +54,15 @@ public class MainActivity extends AppCompatActivity {
         queue.add(stringRequest);
 
     }
+    /*
+    @Override
+    public void onBackPressed() {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.container); // Replace "R.id.container" with the ID of your fragment container
+        if (fragment instanceof HomeFragment) {
+
+            Toast.makeText(this, "Cannot go back from this fragment", Toast.LENGTH_SHORT).show();
+        } else {
+            super.onBackPressed(); // Allow normal back navigation for other fragments
+        }
+    }*/
 }
