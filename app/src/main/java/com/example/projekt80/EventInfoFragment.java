@@ -27,6 +27,7 @@ import com.example.projekt80.databinding.FragmentEventInfoBinding;
 import com.example.projekt80.json.Event;
 import com.example.projekt80.json.Events;
 import com.example.projekt80.json.Friends;
+import com.example.projekt80.json.OnlineMembers;
 import com.example.projekt80.json.User;
 import com.google.gson.Gson;
 
@@ -73,8 +74,21 @@ public class EventInfoFragment extends Fragment {
         getFriends(getContext(), new FriendsCallback() {
             @Override
             public void onSuccess(Friends friends) {
-                binding.members.setLayoutManager(new LinearLayoutManager(getContext()));
-                binding.members.setAdapter(new MembersAdapter(event.getMembers(), user, friends, event.getName()));
+
+                getOnlineMembers(getContext(), new OnlineMembersCallback() {
+                    @Override
+                    public void onSuccess(OnlineMembers onlineMembers) {
+                        System.out.println("members:  " + event.getMembers());
+                        System.out.println("friends:  " + friends.getFriends());
+                        binding.members.setLayoutManager(new LinearLayoutManager(getContext()));
+                        binding.members.setAdapter(new MembersAdapter(event.getMembers(), user, friends, event.getName(), onlineMembers));
+                    }
+
+                    @Override
+                    public void onError(String message) {
+                        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+                    }
+                });
             }
             @Override
             public void onError(String message) {
@@ -99,9 +113,9 @@ public class EventInfoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(event.getMembers().contains(user.getName())){
-                    leaveEvent(event.getName(), binding.getRoot());
+                    leaveEvent();
                 } else {
-                    joinEvent(event.getName());
+                    joinEvent();
                 }
 
             }
@@ -189,10 +203,30 @@ public class EventInfoFragment extends Fragment {
         queue.add(request);
     }
 
+    public void getOnlineMembers(Context context, OnlineMembersCallback callback){
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = LoginFragment.AZURE + "/user/members/online/" + event.getName();
+        StringRequest request = new StringRequest(com.android.volley.Request.Method.GET, url,
+                response -> {;
+                    OnlineMembers onlineMembers = gson.fromJson(response, OnlineMembers.class);
+                    System.out.println("online members: " + onlineMembers.getMembers());
+                    callback.onSuccess(onlineMembers);
 
-    private void joinEvent(String eventName){
+                }, error -> callback.onError(error.getMessage())) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + user.getAccessToken());
+                return headers;
+            }
+        };
+        queue.add(request);
+    }
+
+
+    private void joinEvent(){
         RequestQueue queue = Volley.newRequestQueue(requireContext());
-        String url = LoginFragment.AZURE + "/event/join/" + eventName;
+        String url = LoginFragment.AZURE + "/event/join/" + event.getName();
 
         StringRequest request = new StringRequest(Request.Method.POST, url,
                 response -> {
@@ -217,14 +251,14 @@ public class EventInfoFragment extends Fragment {
         queue.add(request);
 
     }
-    private void leaveEvent(String eventName, View view){
+    private void leaveEvent(){
         RequestQueue queue = Volley.newRequestQueue(requireContext());
         String url = LoginFragment.AZURE + "/event/leave/" + event.getName();
 
         StringRequest request = new StringRequest(Request.Method.POST, url,
                 response -> {
                     Log.d("leave", response);
-                    NavController navController = Navigation.findNavController(view);
+                    NavController navController = Navigation.findNavController(EventInfoFragment.this.requireView());
                     navController.popBackStack();
                     Toast.makeText(requireContext(), "Left event", Toast.LENGTH_SHORT).show();
                 },

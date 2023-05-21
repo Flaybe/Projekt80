@@ -44,7 +44,10 @@
             app:destination="@id/friendsFragment" />
         <action
             android:id="@+id/action_homeFragment_to_loginFragment2"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="false" />
+
     </fragment>
     <fragment
         android:id="@+id/eventListFragment"
