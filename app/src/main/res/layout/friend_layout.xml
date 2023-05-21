@@ -5,9 +5,11 @@
     <TextView
         android:id="@+id/friend_name"
         android:layout_width="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_margin="10dp"
+
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:textSize="20sp"
         android:fontFamily="sans-serif-medium"
         android:textColor="@color/black"
         android:background="@drawable/box"
@@ -16,10 +18,11 @@
         android:id="@+id/accept_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_margin="10dp"
         android:layout_weight="1"
         android:background="@drawable/border"
         android:text="Add Friend"
+        android:textSize="20sp"
         android:textColor="@color/black" />
 
     <TextView
@@ -27,9 +30,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_margin="5dp"
+        android:layout_margin="7dp"
         android:background="@drawable/remove"
         android:minHeight="20dp"
-        android:minWidth="20dp"
-        android:textColor="@color/black" />
+        android:minWidth="20dp" />
 </LinearLayout>
