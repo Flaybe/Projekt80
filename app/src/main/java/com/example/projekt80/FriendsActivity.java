@@ -68,6 +68,9 @@ public class FriendsActivity extends Fragment {
     }
 
     private void getFriendsEvents() {
+        /* skapar en request som hämtar alla events som en friend är med i.
+        *  Skapar en adapter som visar alla events som hämtas.
+        */
         RequestQueue queue = Volley.newRequestQueue(requireContext());
         String url = LoginFragment.AZURE + "/user/" + friendName + "/events";
 

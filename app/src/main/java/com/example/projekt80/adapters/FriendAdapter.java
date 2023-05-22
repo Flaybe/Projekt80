@@ -38,11 +38,13 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendViewHolder>{
     private final List<String> onlineFriendsGlobal = new ArrayList<>();
     private boolean requests;
     private User user;
+    private OnlineFriends onlineFriends;
 
-    public FriendAdapter(List<String> friends, boolean requests, User user) {
+    public FriendAdapter(List<String> friends, boolean requests, User user, OnlineFriends onlineFriends) {
         this.friends = friends;
         this.requests = requests;
         this.user = user;
+        this.onlineFriends = onlineFriends;
 
     }
 
@@ -87,20 +89,6 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendViewHolder>{
                 }
             });
         }
-        onlineFriends(itemView, new OnlineFriendsCallback() {
-            @Override
-            public void onSuccess(OnlineFriends onlineFriends) {
-                onlineFriendsGlobal.addAll(onlineFriends.getFriends());
-                for (int i = 0;i<getItemCount() ;i++){
-                    onBindViewHolder(holder, i);
-                }
-            }
-
-            @Override
-            public void onError(String message) {
-                Log.d("error", message);
-            }
-        });
 
         return holder;
     }
@@ -108,7 +96,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull FriendViewHolder holder, int position) {
         holder.friendName.setText(friends.get(position));
-        if(onlineFriendsGlobal.contains(friends.get(position))){
+        if(onlineFriends.getFriends().contains(friends.get(position))){
             holder.friendName.setBackgroundResource(R.drawable.online);
         }else{
             holder.friendName.setBackgroundResource(R.drawable.offline);
@@ -181,25 +169,5 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendViewHolder>{
             queue.add(stringRequest);
         }
     }
-    public void onlineFriends(View v, OnlineFriendsCallback callback){
-        System.out.println("testing onlineFriends");
-        RequestQueue queue = Volley.newRequestQueue(v.getContext());
-        String url = LoginFragment.AZURE + "/user/friends/online";
-        StringRequest request = new StringRequest(com.android.volley.Request.Method.GET, url,
-                response -> {
-                    Gson gson = new Gson();
-                    OnlineFriends onlineFriends = gson.fromJson(response, OnlineFriends.class);
-                    callback.onSuccess(onlineFriends);
-                }, error -> {
-                    callback.onError(error.toString());
-        })            {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Authorization", "Bearer " + user.getAccessToken());
-                return headers;
-            }
-        };
-        queue.add(request);
-    }
+
 }

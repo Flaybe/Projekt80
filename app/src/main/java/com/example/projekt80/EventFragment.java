@@ -64,8 +64,6 @@ public class EventFragment extends Fragment {
         user = args.getUser();
         queue = Volley.newRequestQueue(getContext());
 
-        // ska göra en request och hämta alla medelanden i eventet och sedan skcika med det till adaptern
-
         binding = FragmentEventBinding.inflate(inflater, container, false);
         binding.eventNameLabel.setText(event.getName());
         binding.chat.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -73,7 +71,8 @@ public class EventFragment extends Fragment {
 
 
         binding.sendButton.setOnClickListener(view -> {
-            this.sendMessage(binding.messageText.getText().toString());
+            //skickar ett meddelande till databasen
+            sendMessage(binding.messageText.getText().toString());
         });
 
         return binding.getRoot();
@@ -81,7 +80,14 @@ public class EventFragment extends Fragment {
 
 
     private void sendMessage(String message){
+        /*
+        Skickar ett meddelande till databasen
+        Om användaren inte är med i eventet så kommer en popup komma upp och fråga om hen vill gå med
+        Om man klickar yes så kör den showChoiseDialog
+        Samt att den uppdaterar meddelandena och droppar tangentbordet
+         */
         String url = LoginFragment.AZURE + "/event/send/" + event.getName();
+
 
         JSONObject json = new JSONObject();
         try {
@@ -103,12 +109,10 @@ public class EventFragment extends Fragment {
                     Log.d("Response", response.toString());
                     this.getMessages(binding.chat);
                     binding.messageText.setText("");
-                    // drop keyboard
-                    // Get the InputMethodManager
+
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
 
-                    // Hide the keyboard
                     imm.hideSoftInputFromWindow(binding.messageText.getWindowToken(), 0);
 
 
@@ -130,7 +134,9 @@ public class EventFragment extends Fragment {
 
 
     private void getMessages(RecyclerView recyclerView){
-
+    /* hämtar meddelanden från databasen och skickar med de till recycleviewadaptern
+        Vi använder oss av Gson för att konvertera json till java objekt
+     */
         String url = LoginFragment.AZURE + "/event/messages/" + event.getName();
 
         JSONObject json = new JSONObject();
@@ -161,6 +167,12 @@ public class EventFragment extends Fragment {
     }
 
     private void showChoiceDialog(String prompt, String message){
+        /*
+        En popup som frågar om användaren vill gå med i eventet
+        Om användaren klickar ja så skickar den en request till databasen så att användaren
+        blir med i eventet. Samt att den skickar meddelandet som användaren skrev innan.
+         */
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Join Event")
                 .setMessage(prompt)

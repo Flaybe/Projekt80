@@ -62,14 +62,16 @@ public class EventListFragment extends Fragment {
         }
 
         binding.joinedEvents.setOnClickListener(new View.OnClickListener() {
+            /*
+                Hämtar alla events man är med i. Samt kollar om en checkbox med
+                 id joinedEvents är iklickad så att den ska veta om den ska displaya alla events
+                 eller bara de man är med i.
+             */
             @Override
             public void onClick(View v) {
-                //  check if checkbox is checked
                 if (binding.joinedEvents.isChecked()) {
-                    //  if checked, show only joined events
                     getJoinedEvents();
                 } else {
-                    //  if not checked, show all events
                     getAllEvents();
                 }
             }
@@ -78,6 +80,7 @@ public class EventListFragment extends Fragment {
         binding.createEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //navigerar till create event fragmentet
                 NavHostFragment.findNavController(EventListFragment.this)
                         .navigate(EventListFragmentDirections.actionEventListFragmentToCreateEventFragment(user));
             }
@@ -88,7 +91,10 @@ public class EventListFragment extends Fragment {
 
 
     private void getAllEvents(){
-
+        /*
+            Skapar en request för att hämta alla events. Skickar med en lista av events till
+            eventadaptern.
+         */
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
         String url = LoginFragment.AZURE + "/event/all";
@@ -113,7 +119,10 @@ public class EventListFragment extends Fragment {
     }
 
     private void getJoinedEvents(){
-
+        /*
+            Skapar ett request för att hämta alla events som en user är med i.
+            Skickar med listan av events till eventadaptern.
+         */
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
         String url = LoginFragment.AZURE + "/user/" + user.getName() + "/events";

@@ -51,10 +51,13 @@ public class CreateEventFragment extends Fragment {
 
         binding = FragmentCreateEventBinding.inflate(inflater, container, false);
 
+        //skickar ett request till azure för att skapa ett event
+        // och navigerar tillbaka till eventlistfragment
         binding.createButton.setOnClickListener(view -> {
             RequestQueue queue = Volley.newRequestQueue(getContext());
             String url = LoginFragment.AZURE + "/event/create";
 
+            //skickar med data i en json
             JSONObject json = new JSONObject();
             try {
                 json.put("name", binding.editName.getText().toString());
@@ -75,6 +78,7 @@ public class CreateEventFragment extends Fragment {
                 Log.e("Error", error.toString());
             })
             {
+                //skickar med token i headern
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     Map<String, String> headers = new HashMap<>();

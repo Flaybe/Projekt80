@@ -72,14 +72,14 @@ public class EventInfoFragment extends Fragment {
         user = args.getUser();
 
         getFriends(getContext(), new FriendsCallback() {
+            //skapar en ny instans av ett interface vi har för hantera när nätverksanropet är klart
+            //i och med att det tar lite tid. Den hämtar onlineFriends. Kör sedan en ny
+            //callback som hämtar onlineMembers och skickar med den till FriendsAdapter.
             @Override
             public void onSuccess(Friends friends) {
-
                 getOnlineMembers(getContext(), new OnlineMembersCallback() {
                     @Override
                     public void onSuccess(OnlineMembers onlineMembers) {
-                        System.out.println("members:  " + event.getMembers());
-                        System.out.println("friends:  " + friends.getFriends());
                         binding.members.setLayoutManager(new LinearLayoutManager(getContext()));
                         binding.members.setAdapter(new MembersAdapter(event.getMembers(), user, friends, event.getName(), onlineMembers));
                     }
@@ -124,6 +124,10 @@ public class EventInfoFragment extends Fragment {
         binding.likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
+                skapar ett request för att skicka en post request till servern
+                för att likea eventet. Samt kör getLikes för att hämta antalet likes.
+                 */
                 RequestQueue queue = Volley.newRequestQueue(getContext());
 
                 String url = LoginFragment.AZURE + "/event/like/" + event.getName();
@@ -152,7 +156,10 @@ public class EventInfoFragment extends Fragment {
 
 
     private void getLikes(String name) {
-
+        /*
+        skapar ett request för att hämta antalet likes för ett event.
+        Samt sätter texten i likesText till antalet likes.
+         */
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
         String url = LoginFragment.AZURE + "/event/likes/" + name;
@@ -179,7 +186,11 @@ public class EventInfoFragment extends Fragment {
 
 
     private void getFriends(Context context, FriendsCallback callback) {
-
+        /*
+        skapar ett request för att hämta användarens vänner. Använder sig av ett interface
+        för att veta när nätverksanropet är klart. Använder sig av Gson för att konvertera json
+        till java objekt.
+         */
         String url = LoginFragment.AZURE + "/user/friends";
 
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -204,12 +215,16 @@ public class EventInfoFragment extends Fragment {
     }
 
     public void getOnlineMembers(Context context, OnlineMembersCallback callback){
+        /*
+        skapar ett request för att hämta vilka medlemmar som är online i ett event.
+         Använder sig av ett interface för att veta när anropet är klart. Använder sig av Gson för
+         att konvertera json till java objekt.
+         */
         RequestQueue queue = Volley.newRequestQueue(context);
         String url = LoginFragment.AZURE + "/user/members/online/" + event.getName();
         StringRequest request = new StringRequest(com.android.volley.Request.Method.GET, url,
                 response -> {;
                     OnlineMembers onlineMembers = gson.fromJson(response, OnlineMembers.class);
-                    System.out.println("online members: " + onlineMembers.getMembers());
                     callback.onSuccess(onlineMembers);
 
                 }, error -> callback.onError(error.getMessage())) {
@@ -225,6 +240,10 @@ public class EventInfoFragment extends Fragment {
 
 
     private void joinEvent(){
+        /*
+        skapar ett request för att skicka en post request som lägger till användaren till ett event
+        samt navigerar tillbaka till eventfragmentet. Lägger också till användaren i eventet lokalt.
+         */
         RequestQueue queue = Volley.newRequestQueue(requireContext());
         String url = LoginFragment.AZURE + "/event/join/" + event.getName();
 
@@ -252,6 +271,9 @@ public class EventInfoFragment extends Fragment {
 
     }
     private void leaveEvent(){
+        /*
+        skapar ett request för att lämna ett event. Navigerar tillbaka till senaste fragmentet.
+         */
         RequestQueue queue = Volley.newRequestQueue(requireContext());
         String url = LoginFragment.AZURE + "/event/leave/" + event.getName();
 

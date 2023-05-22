@@ -42,6 +42,7 @@ public class HomeFragment extends Fragment {
         HomeFragmentArgs args = HomeFragmentArgs.fromBundle(getArguments());
         User user = args.getUser();
         binding = FragmentHomeBinding.inflate(inflater, container, false);
+        // Sätter användarens användarnam som "titel" på skärmen
         binding.username.setText(user.getName());
 
         // EVENTS BUTTON_____________________________________________________________________________________
@@ -68,28 +69,37 @@ public class HomeFragment extends Fragment {
         binding.signout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RequestQueue queue = Volley.newRequestQueue(getContext());
-
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, LoginFragment.AZURE + "/user/logout",
-                        response -> {
-                            Log.d("Response", response);
-                        }, error -> Log.d("Error", error.toString())
-                ) {
-                    @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
-                        Map<String, String> headers = new HashMap<>();
-                        headers.put("Authorization", "Bearer " + user.getAccessToken());
-                        return headers;
-                    }
-                };
-
-                NavHostFragment.findNavController(HomeFragment.this)
-                        .navigate(R.id.loginFragment);
-
-                queue.add(stringRequest);
+                signOut(user);
             }
         });
 
         return binding.getRoot();
+    }
+
+
+
+    private void signOut(User user){
+        /*
+        Loggar ut oss genom att skicka en request och tar oss tillbaka till loginfragment
+         */
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, LoginFragment.AZURE + "/user/logout",
+                response -> {
+                    Log.d("Response", response);
+                }, error -> Log.d("Error", error.toString())
+        ) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + user.getAccessToken());
+                return headers;
+            }
+        };
+
+        NavHostFragment.findNavController(HomeFragment.this)
+                .navigate(R.id.loginFragment);
+
+        queue.add(stringRequest);
     }
 }
