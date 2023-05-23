@@ -37,7 +37,11 @@ import java.util.Map;
 
 
 public class EventFragment extends Fragment {
-
+    /**
+        Gör själva chatten i ett event. Sätter clicklisteners på sendknappen
+        som i sin tur skickar ett nätverksanrop till databasen för att skicka ett meddelande.
+        Har också ett nätverksanrop som hämtar alla meddelanden i chatten, som körs i onCreateView.
+    */
     private FragmentEventBinding binding;
     private Event event;
     private User user;

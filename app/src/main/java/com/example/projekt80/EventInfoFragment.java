@@ -40,7 +40,12 @@ import java.util.Objects;
 
 
 public class EventInfoFragment extends Fragment {
-
+    /**
+        Skapar eventInfofragmentet som innehåller en lista med medlemmarna i eventet.
+        Sätter också de till röd/grön backgrund beroende på om de är online eller inte.
+        Använder sig av callbacks för att veta när nätverksanropen är klara. 
+        Sätter onClickListeners på Join/leave-event samt likeknappen.
+    */
     private FragmentEventInfoBinding binding;
 
     private Event event;

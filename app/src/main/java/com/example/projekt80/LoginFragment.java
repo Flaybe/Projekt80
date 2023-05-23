@@ -27,15 +27,21 @@ import org.json.JSONObject;
 
 
 public class LoginFragment extends Fragment {
+    /**
+     * Hanterar inloggining med nättverksanrop till databasen.
+     * samt övergång till registreringsfragmentet.
+     * @see RegisterFragment
+     */
 
     private FragmentLoginBinding binding;
     //Azure api: https://eventhub80.azurewebsites.net
     public final static String AZURE = "https://eventhub80.azurewebsites.net";
-    private User loggedInUser;
     private final Gson gson = new Gson();
+    
     public LoginFragment() {
         // Required empty public constructor
     }
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +83,6 @@ public class LoginFragment extends Fragment {
                                 String AccessToken = response.get("access_token").toString();
                                 User user = gson.fromJson(json.toString(), User.class);
                                 user.setAccessToken(AccessToken);
-                                loggedInUser = user;
 
                                 Toast.makeText(getContext(), "Welcome " + user.getName(), Toast.LENGTH_SHORT).show();
 

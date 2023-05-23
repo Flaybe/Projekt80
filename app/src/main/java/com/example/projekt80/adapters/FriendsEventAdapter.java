@@ -19,6 +19,12 @@ import com.example.projekt80.json.User;
 
 import java.util.List;
 
+/**
+ * Hanterar klick på vänners event och navigerar
+ * till det eventet fungerar som EventAdapter
+ * Här har vi inkluderar viewholder i denna klassen
+ */
+
 public class FriendsEventAdapter extends RecyclerView.Adapter<FriendsEventAdapter.FriendsEventViewHolder> {
 
     private List<Event> events;

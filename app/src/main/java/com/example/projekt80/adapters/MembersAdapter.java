@@ -27,6 +27,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Sköter logik ifall den ska visas en acceptera knapp eller inte
+ * Samt skickar request till servern för att acceptera en vän
+ * Här har vi inkluderat viewholder i denna klassen
+ */
 
 public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MembersViewHolder> {
     private final List<String> members;

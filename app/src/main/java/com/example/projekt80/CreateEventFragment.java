@@ -28,7 +28,10 @@ import java.util.Map;
 
 
 public class CreateEventFragment extends Fragment {
-
+    /**
+        skapar sidan för createevent. Samt sätter clicklisteners createbuttonknappen. Som i sin
+        tur skickar ett nätverksanrop till databasen för att skapa ett event
+    */
     private FragmentCreateEventBinding binding;
     private User user;
 

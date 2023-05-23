@@ -22,6 +22,12 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Har logik för att se till att lösenordet är tillräckligt långt och att användarnamnet inte
+ * redan finns i databasen. Skickar sedan ett nätverksanrop till databasen för att skapa ett nytt
+ * konto.
+ * checkCredentials löser denna logik.
+ */
 
 public class RegisterFragment extends Fragment {
 

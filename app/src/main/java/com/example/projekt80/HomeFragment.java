@@ -25,6 +25,11 @@ import java.util.Map;
 
 public class HomeFragment extends Fragment {
 
+    /**
+     * Fragment som visar användarens namn och har knappar för att navigera till event och friends
+     * Gör nätverksanrop för att logga ut användaren
+     */
+
     private FragmentHomeBinding binding;
 
     public HomeFragment() {

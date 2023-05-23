@@ -28,6 +28,11 @@ import java.util.Map;
 
 
 public class EventListFragment extends Fragment {
+    /**
+        Displayar en lista med events. Antingen de man är med i eller alla events
+        beroende på om joinedEvents är icheckad. Hämtar allEvents eller joinedEvents med nätverksanrop.
+        Sätter onClickListeners på 
+    */
 
     private FragmentEventListBinding binding;
     private Gson gson = new Gson();

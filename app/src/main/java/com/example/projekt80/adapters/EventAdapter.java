@@ -1,24 +1,24 @@
 package com.example.projekt80.adapters;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.projekt80.EventListFragment;
 import com.example.projekt80.EventListFragmentDirections;
 import com.example.projekt80.R;
 import com.example.projekt80.json.Event;
 import com.example.projekt80.json.User;
-
 import java.util.ArrayList;
+
+
+/**
+    * Hanterar klick på event i eventlistfragment samt klick på info
+ * och skickar oss till rätt info sida
+ */
 
 public class EventAdapter extends RecyclerView.Adapter<EventViewHolder> {
 

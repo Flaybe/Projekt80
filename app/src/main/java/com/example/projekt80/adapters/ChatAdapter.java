@@ -18,6 +18,12 @@ import com.example.projekt80.json.User;
 import java.util.ArrayList;
 import java.util.Objects;
 
+ /**
+ * Adapter för vår chat används i eventfragment
+  * Har koll om det är ditt eller någon annans meddelande och skiftar
+  * sida på texten
+ */
+
 public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolder>{
 
     private final ArrayList<Message> messages;

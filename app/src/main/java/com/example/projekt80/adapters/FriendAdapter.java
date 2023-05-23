@@ -33,9 +33,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Hanterar klick på en viss vän och navigerar till
+ * FriendsActivity med den vän som valts
+ */
+
 public class FriendAdapter extends RecyclerView.Adapter<FriendViewHolder>{
     private final List<String> friends;
-    private final List<String> onlineFriendsGlobal = new ArrayList<>();
     private boolean requests;
     private User user;
     private OnlineFriends onlineFriends;
