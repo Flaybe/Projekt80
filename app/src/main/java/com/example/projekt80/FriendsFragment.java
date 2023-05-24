@@ -29,7 +29,11 @@ import java.util.Map;
 
 
 public class FriendsFragment extends Fragment {
-
+    /**
+     * Displayar antingen alla vänner en användare har, eller alla friend requests som användaren
+     * har fått. Hämtar all data med nätverksanrop. Displayar den igenom att skicka med den till
+     * en adapter.
+     */
     private FragmentFriendsBinding binding;
     private User user;
     private final Gson gson = new Gson();

@@ -32,7 +32,10 @@ import java.util.Objects;
 
 
 public class FriendsActivity extends Fragment {
-
+    /**
+     * Använder sig av ett nätverksanrop för att få fram alla events som en freind är med i.
+     * Displayar sedan alla dessa genom en adapter.
+     */
     private FragmentFriendsActivityBinding binding;
     private String friendName;
     private User user;
